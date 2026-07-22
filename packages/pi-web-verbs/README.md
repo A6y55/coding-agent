@@ -37,9 +37,9 @@ python3 -m pip install playwright
 python3 -m playwright install chromium
 ```
 
-The built-in `search.web` Verb uses a SearXNG instance without an API key. Set
-`PI_WEB_VERBS_SEARXNG_URL` to its base URL; the default is
-`http://127.0.0.1:8080`. The instance must enable JSON in `search.formats`.
+The built-in `search.web` Verb uses Playwright to search DuckDuckGo or Bing in a
+real browser without an API key. `auto` mode falls back to the second engine
+when the first engine cannot return structured results.
 
 An MSR-generated Verb is connected by a local manifest whose `source` points to
 the reviewed Python file and whose `requestClass` and `function` identify its

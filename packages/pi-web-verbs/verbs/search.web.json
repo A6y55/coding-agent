@@ -1,21 +1,16 @@
 {
   "schemaVersion": "1.0",
   "name": "search.web",
-  "version": "1.0.0",
-  "description": "Search the public web through a configured SearXNG instance and return ranked structured results.",
-  "tags": ["search", "web", "searxng", "discovery"],
-  "sites": ["searxng"],
+  "version": "1.1.0",
+  "description": "Search the public web in a Playwright browser and return structured results without a paid API.",
+  "tags": ["search", "web", "playwright", "discovery"],
+  "sites": ["duckduckgo.com", "bing.com"],
   "inputSchema": {
     "type": "object",
     "properties": {
       "query": { "type": "string", "minLength": 1, "maxLength": 500 },
-      "max_results": { "type": "integer", "minimum": 1, "maximum": 50, "default": 10 },
-      "page": { "type": "integer", "minimum": 1, "maximum": 50, "default": 1 },
-      "language": { "type": "string", "minLength": 1, "default": "all" },
-      "categories": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-      "engines": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-      "safe_search": { "type": "integer", "enum": [0, 1, 2], "default": 1 },
-      "time_range": { "type": "string", "enum": ["day", "month", "year"] }
+      "max_results": { "type": "integer", "minimum": 1, "maximum": 20, "default": 10 },
+      "engine": { "type": "string", "enum": ["auto", "duckduckgo", "bing"], "default": "auto" }
     },
     "required": ["query"],
     "additionalProperties": false
@@ -58,15 +53,22 @@
     "additionalProperties": false
   },
   "preconditions": [],
-  "postconditions": [],
+  "postconditions": [
+    {
+      "id": "supported-search-domain",
+      "description": "The browser remains on a supported search domain after extraction.",
+      "kind": "url-matches",
+      "value": "^https://(html\\.duckduckgo\\.com|www\\.bing\\.com)/"
+    }
+  ],
   "auth": { "required": false },
   "risk": "read",
   "sideEffects": [],
   "implementations": [
     {
-      "id": "searxng",
-      "backend": "python",
-      "module": "pi_web_verbs_sidecar.verbs.searxng_search",
+      "id": "playwright-browser",
+      "backend": "browser",
+      "module": "pi_web_verbs_sidecar.verbs.web_search_browser",
       "function": "execute",
       "requestClass": "SearchRequest",
       "responseClass": "SearchResponse",

@@ -25,7 +25,7 @@
           "type": "object",
           "properties": {
             "title": { "type": "string" },
-            "url": { "type": "string", "format": "uri" },
+            "url": { "type": "string", "pattern": "^https?://" },
             "content": { "type": "string" },
             "engines": { "type": "array", "items": { "type": "string" } },
             "score": { "type": "number" },

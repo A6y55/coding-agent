@@ -143,12 +143,12 @@ async def execute_call(params: dict[str, Any], browsers: BrowserPool) -> dict[st
 
     actual_side_effects: list[str] = []
     notes: list[str] = []
-    if isinstance(result, dict) and isinstance(result.get("__webVerb"), dict) and "output" in result:
-        metadata = result["__webVerb"]
+    metadata = result.get("__webVerb") if isinstance(result, dict) else None
+    if isinstance(metadata, dict) and "output" in metadata:
         actual_side_effects = [str(item) for item in metadata.get("actualSideEffects", [])]
         notes = [str(item) for item in metadata.get("notes", [])]
         reported_urls = [str(item) for item in metadata.get("evidenceUrls", [])]
-        result = result["output"]
+        result = metadata["output"]
 
     postconditions = await evaluate_conditions(verb.get("postconditions", []), page)
     if any(not item["passed"] for item in postconditions):

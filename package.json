@@ -1,0 +1,60 @@
+{
+  "name": "pi-coding-agent-kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Composable Pi extensions for a safe, reloadable coding agent",
+  "keywords": [
+    "pi-package",
+    "coding-agent"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ],
+    "extensions": [
+      "./extensions/plan-mode/index.ts",
+      "./extensions/permission-gate/index.ts",
+      "./extensions/sandbox/index.ts",
+      "./extensions/ssh-remote-tools/index.ts",
+      "./extensions/subagent/index.ts",
+      "./extensions/git-checkpoint/index.ts",
+      "./extensions/runtime-reload/index.ts",
+      "./extensions/custom-compaction/index.ts",
+      "./extensions/structured-output/index.ts",
+      "./extensions/preset/index.ts"
+    ]
+  },
+  "scripts": {
+    "agent:isolated": "node ./scripts/agent-isolated.mjs",
+    "check": "tsc --noEmit",
+    "test": "vitest run && npm run test:sidecar",
+    "test:sidecar": "python3 -m unittest discover -s packages/pi-web-verbs/test -p 'test_*.py'"
+  },
+  "dependencies": {
+    "@anthropic-ai/sandbox-runtime": "0.0.26"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-agent-core": "*",
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "typebox": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-agent-core": "0.80.10",
+    "@earendil-works/pi-ai": "0.80.10",
+    "@earendil-works/pi-coding-agent": "0.80.10",
+    "@earendil-works/pi-tui": "0.80.10",
+    "@types/node": "24.12.4",
+    "typebox": "1.1.38",
+    "typescript": "5.9.3",
+    "vitest": "4.1.9"
+  }
+}

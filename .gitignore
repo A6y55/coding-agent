@@ -1,0 +1,15 @@
+node_modules/
+*.log
+.DS_Store
+.pi/auth.json
+.pi/models-store.json
+.pi/sessions/
+.pi/trust.json
+.pi/npm/
+.pi/git/
+.pi/web-verbs/audit/
+.pi/web-verbs/checkpoints/
+.pi/web-verbs/evidence/
+packages/pi-web-verbs/.evidence/
+__pycache__/
+*.pyc

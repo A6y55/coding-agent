@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "name": "local.echo",
+  "version": "1.0.0",
+  "description": "Return a typed value through the Python sidecar for installation and contract testing.",
+  "tags": ["local", "diagnostic"],
+  "sites": [],
+  "inputSchema": {
+    "type": "object",
+    "properties": { "message": { "type": "string" } },
+    "required": ["message"],
+    "additionalProperties": false
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": { "message": { "type": "string" } },
+    "required": ["message"],
+    "additionalProperties": false
+  },
+  "preconditions": [],
+  "postconditions": [],
+  "auth": { "required": false },
+  "risk": "read",
+  "sideEffects": [],
+  "implementations": [
+    {
+      "id": "python",
+      "backend": "python",
+      "module": "pi_web_verbs_sidecar.verbs.echo",
+      "function": "execute",
+      "priority": 100
+    }
+  ],
+  "status": "tested",
+  "tests": { "status": "passing", "revision": "builtin" }
+}

@@ -58,7 +58,7 @@
       "id": "supported-search-domain",
       "description": "The browser remains on a supported search domain after extraction.",
       "kind": "url-matches",
-      "value": "^https://(html\\.duckduckgo\\.com|www\\.bing\\.com)/"
+      "value": "^https://(html\\.duckduckgo\\.com|([a-z]{2}\\.)?bing\\.com)/"
     }
   ],
   "auth": { "required": false },

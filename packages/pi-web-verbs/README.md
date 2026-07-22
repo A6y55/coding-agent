@@ -37,6 +37,10 @@ python3 -m pip install playwright
 python3 -m playwright install chromium
 ```
 
+The built-in `search.web` Verb uses a SearXNG instance without an API key. Set
+`PI_WEB_VERBS_SEARXNG_URL` to its base URL; the default is
+`http://127.0.0.1:8080`. The instance must enable JSON in `search.formats`.
+
 An MSR-generated Verb is connected by a local manifest whose `source` points to
 the reviewed Python file and whose `requestClass` and `function` identify its
 public typed API. This repository does not download or activate generated site

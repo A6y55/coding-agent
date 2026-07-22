@@ -126,6 +126,7 @@ async def execute_call(params: dict[str, Any], browsers: BrowserPool) -> dict[st
     page = None
     profile = context.get("profile")
     session_id = None
+    reported_urls: list[str] = []
 
     if implementation["backend"] == "browser":
         page, profile = await browsers.page(context["cwd"], profile)
@@ -146,13 +147,14 @@ async def execute_call(params: dict[str, Any], browsers: BrowserPool) -> dict[st
         metadata = result["__webVerb"]
         actual_side_effects = [str(item) for item in metadata.get("actualSideEffects", [])]
         notes = [str(item) for item in metadata.get("notes", [])]
+        reported_urls = [str(item) for item in metadata.get("evidenceUrls", [])]
         result = result["output"]
 
     postconditions = await evaluate_conditions(verb.get("postconditions", []), page)
     if any(not item["passed"] for item in postconditions):
         raise RuntimeError("One or more Web Verb postconditions failed")
 
-    urls: list[str] = []
+    urls: list[str] = reported_urls
     screenshots: list[str] = []
     dom_snapshots: list[str] = []
     if page is not None:

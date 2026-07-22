@@ -21,6 +21,8 @@ describe("VerbRegistry", () => {
 		await registry.reload();
 
 		expect(registry.get("local.echo").version).toBe("1.0.0");
+		expect(registry.get("search.web").implementations[0]?.id).toBe("searxng");
+		expect(registry.search({ task: "public web search" }).map((verb) => verb.name)).toEqual(["search.web"]);
 		expect(registry.search({ task: "diagnostic echo" }).map((verb) => verb.name)).toEqual(["local.echo"]);
 		expect(() => registry.validateInput(registry.get("local.echo"), { message: 42 })).toThrow("Schema validation failed");
 	});

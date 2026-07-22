@@ -1,1 +1,1 @@
-"""Built-in diagnostic verbs."""
+"""Built-in Web Verbs."""

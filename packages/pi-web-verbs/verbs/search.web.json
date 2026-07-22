@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0",
+  "name": "search.web",
+  "version": "1.0.0",
+  "description": "Search the public web through a configured SearXNG instance and return ranked structured results.",
+  "tags": ["search", "web", "searxng", "discovery"],
+  "sites": ["searxng"],
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "query": { "type": "string", "minLength": 1, "maxLength": 500 },
+      "max_results": { "type": "integer", "minimum": 1, "maximum": 50, "default": 10 },
+      "page": { "type": "integer", "minimum": 1, "maximum": 50, "default": 1 },
+      "language": { "type": "string", "minLength": 1, "default": "all" },
+      "categories": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+      "engines": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+      "safe_search": { "type": "integer", "enum": [0, 1, 2], "default": 1 },
+      "time_range": { "type": "string", "enum": ["day", "month", "year"] }
+    },
+    "required": ["query"],
+    "additionalProperties": false
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "query": { "type": "string" },
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "url": { "type": "string", "format": "uri" },
+            "content": { "type": "string" },
+            "engines": { "type": "array", "items": { "type": "string" } },
+            "score": { "type": "number" },
+            "published_date": { "type": ["string", "null"] },
+            "thumbnail": { "type": ["string", "null"] }
+          },
+          "required": ["title", "url", "content", "engines", "score", "published_date", "thumbnail"],
+          "additionalProperties": false
+        }
+      },
+      "answers": { "type": "array", "items": { "type": "string" } },
+      "corrections": { "type": "array", "items": { "type": "string" } },
+      "suggestions": { "type": "array", "items": { "type": "string" } },
+      "unresponsive_engines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": { "engine": { "type": "string" }, "error": { "type": "string" } },
+          "required": ["engine", "error"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": ["query", "results", "answers", "corrections", "suggestions", "unresponsive_engines"],
+    "additionalProperties": false
+  },
+  "preconditions": [],
+  "postconditions": [],
+  "auth": { "required": false },
+  "risk": "read",
+  "sideEffects": [],
+  "implementations": [
+    {
+      "id": "searxng",
+      "backend": "python",
+      "module": "pi_web_verbs_sidecar.verbs.searxng_search",
+      "function": "execute",
+      "requestClass": "SearchRequest",
+      "responseClass": "SearchResponse",
+      "priority": 100
+    }
+  ],
+  "status": "tested",
+  "tests": { "status": "passing", "revision": "builtin-mock" }
+}

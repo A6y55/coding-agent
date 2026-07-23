@@ -27,6 +27,7 @@
       "./extensions/git-checkpoint/index.ts",
       "./extensions/runtime-reload/index.ts",
       "./extensions/custom-compaction/index.ts",
+      "./extensions/tool-routing/index.ts",
       "./extensions/structured-output/index.ts",
       "./extensions/preset/index.ts"
     ]

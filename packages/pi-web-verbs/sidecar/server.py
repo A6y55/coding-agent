@@ -53,7 +53,11 @@ class BrowserPool:
             profile_dir = Path(cwd, ".pi", "web-verbs", "profiles", profile_name)
             profile_dir.mkdir(parents=True, exist_ok=True)
             headless = os.environ.get("PI_WEB_VERBS_HEADLESS", "0") == "1"
-            context = await self._playwright.chromium.launch_persistent_context(str(profile_dir), headless=headless)
+            executable_path = os.environ.get("PI_WEB_VERBS_CHROME_EXECUTABLE")
+            launch_options: dict[str, Any] = {"headless": headless}
+            if executable_path:
+                launch_options["executable_path"] = executable_path
+            context = await self._playwright.chromium.launch_persistent_context(str(profile_dir), **launch_options)
             self._contexts[profile_name] = context
         page = context.pages[0] if context.pages else await context.new_page()
         return page, profile_name

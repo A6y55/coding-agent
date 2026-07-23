@@ -160,9 +160,25 @@ export default function planModeExtension(pi: ExtensionAPI): void {
 		handler: async (ctx) => togglePlanMode(ctx),
 	});
 
-	// Block destructive bash commands in plan mode
+	// Block mutating Web Verbs and destructive bash commands in plan mode
 	pi.on("tool_call", async (event) => {
-		if (!planModeEnabled || event.toolName !== "bash") return;
+		if (!planModeEnabled) return;
+
+		if (event.toolName === "web_verb_program") {
+			return {
+				block: true,
+				reason: "Plan mode permits only read-risk Web Verb calls, not web_verb_program.",
+			};
+		}
+
+		if (event.toolName === "web_verb_call" && event.input.name !== "search.web") {
+			return {
+				block: true,
+				reason: "Plan mode permits only the read-risk search.web Verb.",
+			};
+		}
+
+		if (event.toolName !== "bash") return;
 
 		const command = event.input.command as string;
 		if (!isSafeCommand(command)) {
@@ -212,7 +228,7 @@ Restrictions:
 - Bash is restricted to an allowlist of read-only commands
 
 Ask clarifying questions using the questionnaire tool.
-Use brave-search skill via bash for web research.
+For open-web research, discover a read-risk Verb with web_verb_search and call search.web through web_verb_call. Do not use Brave Search or mutating Web Verbs.
 
 Create a detailed numbered plan under a "Plan:" header:
 

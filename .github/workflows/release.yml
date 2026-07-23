@@ -5,14 +5,15 @@ on:
     tags: ["v*"]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  release:
+  build:
+    name: Verify and pack
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -41,7 +42,28 @@ jobs:
         run: |
           mkdir -p dist
           npm pack --ignore-scripts --pack-destination dist
+      - name: Upload release package
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: dist/*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish GitHub release
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Download release package
+        uses: actions/download-artifact@v5
+        with:
+          name: release-package
+          path: dist
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${GITHUB_REF_NAME}" dist/*.tgz --verify-tag --generate-notes
+        run: gh release create "${GITHUB_REF_NAME}" dist/*.tgz --repo "${GITHUB_REPOSITORY}" --verify-tag --generate-notes

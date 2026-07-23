@@ -14,7 +14,7 @@
 - Context7 CLI + Skill：按需检索最新开发文档，不使用 MCP。
 - CI/CD：自动执行类型检查、测试和打包，并通过版本 Tag 创建 GitHub Release。
 
-`pi-web-verbs` 是可选的 Web 自动化扩展，不属于 Coding Agent 核心；它可以通过 Playwright 浏览器免费检索网页，再调用站点 Verb 执行操作。
+`pi-web-verbs` 是辅助 Web 自动化扩展；它通过 Playwright 浏览器免费检索网页，并以类型化 Verb 执行站点操作。Coding Agent 的独立系统提示词会将代码检索、Context7 文档查询和 Web Verb 网页操作路由到对应工具。
 
 ## 安装方法
 
@@ -25,16 +25,18 @@ git clone https://github.com/A6y55/coding-agent.git
 cd coding-agent
 npm ci --ignore-scripts --no-audit
 npm_config_cache="/tmp/pi-coding-agent-ctx7-$UID" npx -y ctx7@latest login
+python3 -m venv .pi/web-verbs/venv
+.pi/web-verbs/venv/bin/python -m pip install playwright==1.52.0
 ```
 
 Context7 匿名访问可用，但登录后具有更高额度；非交互环境也可以设置 `CONTEXT7_API_KEY`。本项目只调用 Context7 CLI，不安装 MCP server。
 
 `agent:isolated` 使用本仓库的 `.pi` 配置目录，不读取或修改 `~/.pi/agent`，因此不会与其他 Pi Agent 的系统提示词、Preset、Subagent 和扩展配置混合。
 
-可选安装 Web Verbs：
+启动器会优先使用系统安装的 Chrome 或 Chromium。系统没有可用浏览器时安装 Playwright Chromium：
 
 ```bash
-PI_CODING_AGENT_DIR="$PWD/.pi" ./node_modules/.bin/pi install "$PWD/packages/pi-web-verbs" --no-approve
+.pi/web-verbs/venv/bin/python -m playwright install chromium
 ```
 
 ## 使用方法

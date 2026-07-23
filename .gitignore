@@ -10,6 +10,8 @@ node_modules/
 .pi/web-verbs/audit/
 .pi/web-verbs/checkpoints/
 .pi/web-verbs/evidence/
+.pi/web-verbs/profiles/
+.pi/web-verbs/venv/
 packages/pi-web-verbs/.evidence/
 __pycache__/
 *.pyc

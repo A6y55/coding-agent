@@ -1,22 +1,22 @@
 {
   "plan": {
     "thinkingLevel": "high",
-    "tools": ["read", "grep", "find", "ls", "structured_output"],
+    "tools": ["read", "grep", "find", "ls", "web_verb_search", "web_verb_describe", "web_verb_call", "structured_output"],
     "instructions": "Work in read-only planning mode. Inspect the repository, identify constraints and risks, then return a numbered plan with explicit files and verification steps. Do not modify files or external state."
   },
   "develop": {
     "thinkingLevel": "high",
-    "tools": ["read", "bash", "edit", "write", "grep", "find", "ls", "subagent", "structured_output", "reload_runtime"],
+    "tools": ["read", "bash", "edit", "write", "grep", "find", "ls", "subagent", "web_verb_search", "web_verb_describe", "web_verb_call", "web_verb_program", "structured_output", "reload_runtime"],
     "instructions": "Implement the confirmed plan with focused changes. Preserve unrelated work, run proportionate checks, and record concrete results and unresolved risks."
   },
   "test": {
     "thinkingLevel": "medium",
-    "tools": ["read", "bash", "edit", "write", "grep", "find", "ls", "subagent", "structured_output"],
+    "tools": ["read", "bash", "edit", "write", "grep", "find", "ls", "subagent", "web_verb_search", "web_verb_describe", "web_verb_call", "web_verb_program", "structured_output"],
     "instructions": "Prioritize reproducible verification. Run the narrowest relevant checks first, fix failures within scope, and report exact commands and outcomes."
   },
   "review": {
     "thinkingLevel": "high",
-    "tools": ["read", "grep", "find", "ls", "structured_output"],
+    "tools": ["read", "grep", "find", "ls", "web_verb_search", "web_verb_describe", "web_verb_call", "structured_output"],
     "instructions": "Review in read-only mode. Lead with concrete bugs, regressions, security risks, and missing tests, ordered by severity and grounded in file references."
   }
 }

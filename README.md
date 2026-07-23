@@ -18,7 +18,36 @@
 
 ## 安装方法
 
-需要 Node.js 22.19 或更高版本。
+需要 Node.js 22.19 或更高版本、Git 和 Python 3。Sandbox 的系统依赖因操作系统而异。
+
+### macOS
+
+macOS 使用系统自带的 `sandbox-exec`，额外安装 `ripgrep` 即可。使用 Homebrew 安装前置依赖：
+
+```bash
+brew install git node python ripgrep
+```
+
+### Linux
+
+Linux Sandbox 需要 `ripgrep`、`bubblewrap` 和 `socat`。Debian/Ubuntu 使用：
+
+```bash
+sudo apt update
+sudo apt install -y git python3 python3-venv ripgrep bubblewrap socat
+```
+
+发行版软件源中的 Node.js 版本可能低于要求，请通过 Node.js 官方发行版或版本管理器安装 Node.js 22.19 或更高版本。其他 Linux 发行版请安装提供 `rg`、`bwrap` 和 `socat` 命令的同名软件包。
+
+安装后可以检查 Sandbox 依赖：
+
+```bash
+rg --version
+bwrap --version
+socat -V
+```
+
+### 通用步骤
 
 ```bash
 git clone https://github.com/A6y55/coding-agent.git

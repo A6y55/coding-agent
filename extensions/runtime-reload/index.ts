@@ -1,5 +1,4 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
 import { createGitCheckpoint, type GitCheckpoint, restoreGitCheckpoint } from "../../src/git-checkpoint.ts";
 
 export default function runtimeReloadExtension(pi: ExtensionAPI): void {
@@ -37,34 +36,6 @@ export default function runtimeReloadExtension(pi: ExtensionAPI): void {
 			await restoreGitCheckpoint(ctx.cwd, checkpoint);
 			await ctx.reload();
 			return;
-		},
-	});
-
-	pi.registerTool({
-		name: "reload_runtime",
-		label: "Reload Runtime",
-		description: "Queue a checkpointed reload after extension code or runtime resources change",
-		parameters: Type.Object({}),
-		async execute() {
-			pi.sendUserMessage("/reload-runtime", { deliverAs: "followUp" });
-			return {
-				content: [{ type: "text", text: "Queued checkpointed runtime reload." }],
-				details: { queued: true },
-			};
-		},
-	});
-
-	pi.registerTool({
-		name: "rollback_runtime",
-		label: "Rollback Runtime",
-		description: "Queue an approved rollback to the latest checkpoint created before runtime reload",
-		parameters: Type.Object({}),
-		async execute() {
-			pi.sendUserMessage("/rollback-runtime", { deliverAs: "followUp" });
-			return {
-				content: [{ type: "text", text: "Queued interactive runtime rollback." }],
-				details: { queued: true },
-			};
 		},
 	});
 }
